@@ -1,0 +1,296 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>开发Moto360国行版手表应用 | Ting&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Ting Sun">
+    
+    <meta name="description" content="Moto360二代国行版手表已经发布很长时间了，然而很多开发者却不知道怎么适配自己的应用使其正常运行。本文会一步步展现如何将android sdk sample中的DataLayer工程适配Moto360国行版。这个工程本来是运行在原生android wear系统上。
+下载国行版专用SDKMoto国">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="suntingbcwl" />
+    <meta name="twitter:title" content="开发Moto360国行版手表应用 | Ting&#39;s Blog" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Ting&#39;s Blog" title="Ting&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Ting&#39;s Blog">Ting&#39;s Blog</a></h1>
+				<h2 class="blog-motto">人生最可悲的事情，莫过于胸怀大志，却又虚度光阴</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/16/develop-moto-china/" title="开发Moto360国行版手表应用" itemprop="url">开发Moto360国行版手表应用</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://plus.google.com/111651438808800200000?rel=author" title="Ting Sun" target="_blank" itemprop="author">Ting Sun</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-12-15T16:15:51.000Z" itemprop="datePublished">2015-12-16</time>
+    更新日期:<time datetime="2015-12-15T16:15:51.000Z" itemprop="dateModified">2015-12-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#u4E0B_u8F7D_u56FD_u884C_u7248_u4E13_u7528SDK"><span class="toc-number">1.</span> <span class="toc-text">下载国行版专用SDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u51C6_u5907DataLayer_u5DE5_u7A0B"><span class="toc-number">2.</span> <span class="toc-text">准备DataLayer工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u66FF_u6362_u624B_u673A_u7AEFSDK_u5F15_u7528"><span class="toc-number">3.</span> <span class="toc-text">替换手机端SDK引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u4FEE_u6539_u8C03_u7528_u4EE3_u7801"><span class="toc-number">4.</span> <span class="toc-text">修改调用代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u603B_u7ED3"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo_u94FE_u63A5"><span class="toc-number">6.</span> <span class="toc-text">Demo链接</span></a></li></ol>
+		</div>
+		
+		<p>Moto360二代国行版手表已经发布很长时间了，然而很多开发者却不知道怎么适配自己的应用使其正常运行。本文会一步步展现如何将android sdk sample中的DataLayer工程适配Moto360国行版。这个工程本来是运行在原生android wear系统上。</p>
+<h3 id="u4E0B_u8F7D_u56FD_u884C_u7248_u4E13_u7528SDK"><a href="#u4E0B_u8F7D_u56FD_u884C_u7248_u4E13_u7528SDK" class="headerlink" title="下载国行版专用SDK"></a>下载国行版专用SDK</h3><p>Moto国行版应用手机端必须使用国行版本专门定制的SDK，使用和android wear原生一样的play-service包是无法和手表进行通信的，手表端仍然可以使用play-services-wearable包。</p>
+<p>那么如何下载SDK呢，<a href="https://github.com/ticwear/sdk/raw/master/android-wear-lib/wearable-api-client-repository.zip" target="_blank" rel="external">点击下载</a></p>
+<p>下载完成解压之后我们顺着路径点开可以看到一个文件<code>play-services-wearable-standalone-7.5.0.aar</code></p>
+<h3 id="u51C6_u5907DataLayer_u5DE5_u7A0B"><a href="#u51C6_u5907DataLayer_u5DE5_u7A0B" class="headerlink" title="准备DataLayer工程"></a>准备DataLayer工程</h3><p>Android SDK的sample目录下有一个DataLayer的工程，是演示手机和手表如何使用gms进行数据通信的，路径在 <code>$ANDROID_HOME/samples/android-22/wearable/DataLayer</code>。我们将其拷贝出来，放在自己的工作目录下。</p>
+<h3 id="u66FF_u6362_u624B_u673A_u7AEFSDK_u5F15_u7528"><a href="#u66FF_u6362_u624B_u673A_u7AEFSDK_u5F15_u7528" class="headerlink" title="替换手机端SDK引用"></a>替换手机端SDK引用</h3><p>手机端需要将之前引用的<code>com.google.android.gms:play-services-wearable</code>替换为我们下载的SDK。</p>
+<p>在Application模块下新建libs目录，并将之前提取出来的aar文件放置到libs目录下；</p>
+<p>修改Application模块的build.gradle，关键代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    flatDir &#123;</span><br><span class="line">        <span class="built_in">dirs</span> <span class="string">'libs'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile(name:<span class="string">'play-services-wearable-standalone-7.5.0'</span>, ext:<span class="string">'aar'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="u4FEE_u6539_u8C03_u7528_u4EE3_u7801"><a href="#u4FEE_u6539_u8C03_u7528_u4EE3_u7801" class="headerlink" title="修改调用代码"></a>修改调用代码</h3><p>替换了手机端SDK引用之后我们编译代码，发现编译不通过，查看之下原来是Application模块里面MainActivity的一段代码的问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span> <span class="comment">//DataListener</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataChanged</span><span class="params">(DataEventBuffer dataEvents)</span> </span>&#123;</span><br><span class="line">    LOGD(TAG, <span class="string">"onDataChanged: "</span> + dataEvents);</span><br><span class="line">    <span class="keyword">final</span> List&lt;DataEvent&gt; events = FreezableUtils.freezeIterable(dataEvents);</span><br><span class="line">    dataEvents.close();</span><br><span class="line">    runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (DataEvent event : events) &#123;</span><br><span class="line">                <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_CHANGED) &#123;</span><br><span class="line">                    mDataItemListAdapter.add(</span><br><span class="line">                            <span class="keyword">new</span> Event(<span class="string">"DataItem Changed"</span>, event.getDataItem().toString()));</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_DELETED) &#123;</span><br><span class="line">                    mDataItemListAdapter.add(</span><br><span class="line">                            <span class="keyword">new</span> Event(<span class="string">"DataItem Deleted"</span>, event.getDataItem().toString()));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>错误原因是国行版SDK并没有提供FreezableUtils这个类，没关系，我们自己来实现这一块，修改之后的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span> <span class="comment">//DataListener</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataChanged</span><span class="params">(<span class="keyword">final</span> DataEventBuffer dataEvents)</span> </span>&#123;</span><br><span class="line">    LOGD(TAG, <span class="string">"onDataChanged: "</span> + dataEvents);</span><br><span class="line">    <span class="keyword">final</span> ArrayList&lt;DataEvent&gt; events = <span class="keyword">new</span> ArrayList&lt;DataEvent&gt;();</span><br><span class="line">    <span class="keyword">for</span> (DataEvent event : dataEvents) &#123;</span><br><span class="line">        events.add(event.freeze());</span><br><span class="line">    &#125;</span><br><span class="line">    dataEvents.release();</span><br><span class="line">    runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (DataEvent event : events) &#123;</span><br><span class="line">                <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_CHANGED) &#123;</span><br><span class="line">                    mDataItemListAdapter.add(</span><br><span class="line">                            <span class="keyword">new</span> Event(<span class="string">"DataItem Changed"</span>, event.getDataItem().toString()));</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_DELETED) &#123;</span><br><span class="line">                    mDataItemListAdapter.add(</span><br><span class="line">                            <span class="keyword">new</span> Event(<span class="string">"DataItem Deleted"</span>, event.getDataItem().toString()));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译，安装，运行，发现一切都很完美。</p>
+<h3 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h3><p>至此我们的适配工作就全部完成了。细心的朋友会发现，Android Wear原生app适配国行版其实很简单，就是需要将手机端引用的play-service包替换成国行版本专用的SDK即可，无需做其他额外的修改。</p>
+<h3 id="Demo_u94FE_u63A5"><a href="#Demo_u94FE_u63A5" class="headerlink" title="Demo链接"></a>Demo链接</h3><p>具体的代码参见 <a href="https://github.com/Tinker-S/DataLayerForMotoChina" target="_blank" rel="external">Demo</a>，有任何问题可发邮件至<code>sunting.bcwl@gmail.com</code>。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/12/16/develop-moto-china/" data-title="开发Moto360国行版手表应用 | Ting&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#u4E0B_u8F7D_u56FD_u884C_u7248_u4E13_u7528SDK"><span class="toc-number">1.</span> <span class="toc-text">下载国行版专用SDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u51C6_u5907DataLayer_u5DE5_u7A0B"><span class="toc-number">2.</span> <span class="toc-text">准备DataLayer工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u66FF_u6362_u624B_u673A_u7AEFSDK_u5F15_u7528"><span class="toc-number">3.</span> <span class="toc-text">替换手机端SDK引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u4FEE_u6539_u8C03_u7528_u4EE3_u7801"><span class="toc-number">4.</span> <span class="toc-text">修改调用代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u603B_u7ED3"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo_u94FE_u63A5"><span class="toc-number">6.</span> <span class="toc-text">Demo链接</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m Tinker in Google Plus. <br/>
+			Welcome to my blog.</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		<a href="https://twitter.com/suntingbcwl" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/Tinker-S" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="Ting Sun">Ting Sun</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
