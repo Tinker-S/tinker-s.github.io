@@ -1,0 +1,3 @@
+[submodule "theme/pacman"]
+	path = theme/pacman
+	url = https://github.com/A-limon/pacman
